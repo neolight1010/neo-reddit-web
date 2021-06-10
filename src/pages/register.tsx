@@ -17,7 +17,7 @@ export default function register(_props: registerProps): ReactElement | null {
           console.log(values);
         }}
       >
-        {({ values, handleChange }) => (
+        {({ isSubmitting }) => (
           <Form>
             <InputField
               name="username"
@@ -30,7 +30,7 @@ export default function register(_props: registerProps): ReactElement | null {
               placeholder="your_password"
               type="password"
             />
-            <Button type="submit" colorScheme="teal">
+            <Button type="submit" colorScheme="teal" isLoading={isSubmitting}>
               Register
             </Button>
           </Form>
