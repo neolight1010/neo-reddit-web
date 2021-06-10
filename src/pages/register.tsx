@@ -1,3 +1,5 @@
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
 import { Form, Formik } from "formik";
 import React, { ReactElement } from "react";
 
@@ -11,9 +13,17 @@ export default function register(_props: registerProps): ReactElement | null {
         console.log(values);
       }}
     >
-      {() => (
+      {({ values, handleChange }) => (
         <Form>
-          <div>Hello</div>
+          <FormControl>
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <Input
+              value={values.username}
+              onChange={handleChange}
+              id="username"
+              placeholder="username"
+            />
+          </FormControl>
         </Form>
       )}
     </Formik>
