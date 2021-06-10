@@ -8,7 +8,7 @@ export interface registerProps {}
 
 export default function register(_props: registerProps): ReactElement | null {
   return (
-    <Wrapper>
+    <Wrapper variant="small">
       <Formik
         initialValues={{ username: "", password: "" }}
         onSubmit={(values) => {
