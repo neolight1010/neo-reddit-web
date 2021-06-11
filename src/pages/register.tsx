@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/button";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
 import { Form, Formik } from "formik";
 import React, { ReactElement } from "react";
 import { InputField } from "../components/InputField";
@@ -29,8 +27,14 @@ export default function register(_props: registerProps): ReactElement | null {
               label="Password"
               placeholder="your_password"
               type="password"
+              mt="8px"
             />
-            <Button type="submit" colorScheme="teal" isLoading={isSubmitting}>
+            <Button
+              mt="16px"
+              type="submit"
+              colorScheme="teal"
+              isLoading={isSubmitting}
+            >
               Register
             </Button>
           </Form>
