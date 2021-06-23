@@ -1,20 +1,42 @@
-import { Box, Link } from "@chakra-ui/layout";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Box, HStack, Link } from "@chakra-ui/layout";
+import { Button, Flex, Spinner } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
 import NextLink from "next/link";
-import { useMeQuery } from "../generated/graphql";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import { useRouter } from "next/dist/client/router";
 
 export interface NavBarProps {}
 
 export function NavBar(_props: NavBarProps): ReactElement | null {
   const [meData, _execMeQuery] = useMeQuery();
+  const [, execLogout] = useLogoutMutation();
+  const router = useRouter();
 
   let body = null;
   if (meData.fetching) {
     body = <Spinner />;
   } else {
     if (meData.data?.me.user) {
-      body = <>{meData.data.me.user?.username}</>;
+      body = (
+        <HStack>
+          <Box>{meData.data.me.user?.username}</Box>
+          <Button
+            variant="link"
+            color="black"
+            onClick={async () => {
+              const logoutData = await execLogout();
+
+              if (logoutData.data?.logout === true) {
+                router.reload();
+              } else {
+                console.log("Logout error!");
+              }
+            }}
+          >
+            Logout
+          </Button>
+        </HStack>
+      );
     } else {
       body = (
         <>
