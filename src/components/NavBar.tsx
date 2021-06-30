@@ -4,11 +4,12 @@ import React, { ReactElement } from "react";
 import NextLink from "next/link";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { useRouter } from "next/dist/client/router";
+import isServer from "../utils/isServer";
 
 export interface NavBarProps {}
 
 export function NavBar(_props: NavBarProps): ReactElement | null {
-  const [meData, _execMeQuery] = useMeQuery();
+  const [meData, _execMeQuery] = useMeQuery({ pause: isServer() });
   const [, execLogout] = useLogoutMutation();
   const router = useRouter();
 
