@@ -1,8 +1,8 @@
 mutation Login($username: String!, $password: String!) {
-  login(loginInfo: {
+  login(
     username: $username
     password: $password
-  }) {
+  ) {
     user {
       ...UsernameAndId
     }

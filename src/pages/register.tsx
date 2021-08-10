@@ -37,6 +37,11 @@ export function register(_props: registerProps): ReactElement | null {
               placeholder="your_username"
             />
             <InputField
+              name="email"
+              label="Email"
+              placeholder="user@example.com"
+            />
+            <InputField
               name="password"
               label="Password"
               placeholder="your_password"
