@@ -3,12 +3,6 @@ mutation Login($username: String!, $password: String!) {
     username: $username
     password: $password
   ) {
-    user {
-      ...UsernameAndId
-    }
-    errors {
-      message
-      field
-    }
+    ...RegularUserResponse
   }
 }
