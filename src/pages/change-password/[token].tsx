@@ -1,27 +1,31 @@
-import {Alert, Button} from "@chakra-ui/react";
-import {Formik, Form} from "formik";
-import {NextPage} from "next";
-import {withUrqlClient} from "next-urql";
+import { Alert, Button, Flex, Link } from "@chakra-ui/react";
+import { Formik, Form } from "formik";
+import { NextPage } from "next";
+import { withUrqlClient } from "next-urql";
 import router from "next/dist/client/router";
-import React, {useState} from "react";
-import {InputField} from "../../components/InputField";
-import {Wrapper} from "../../components/Wrapper";
-import {useChangePasswordMutation} from "../../generated/graphql";
-import {createUrqlClient} from "../../utils/createUrqlClient";
-import {toErrorMap} from "../../utils/toErrorMap";
-import {FunctionComponent} from "react";
+import React, { useState } from "react";
+import { InputField } from "../../components/InputField";
+import { Wrapper } from "../../components/Wrapper";
+import { useChangePasswordMutation } from "../../generated/graphql";
+import { createUrqlClient } from "../../utils/createUrqlClient";
+import { toErrorMap } from "../../utils/toErrorMap";
+import { FunctionComponent } from "react";
+import NextLink from "next/link";
 
-const ChangePassword: NextPage<{token: string}> = ({token}) => {
+const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const [, changePassword] = useChangePasswordMutation();
   const [tokenError, setTokenError] = useState("");
 
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{password: ""}}
-        onSubmit={async (values, {setErrors}) => {
+        initialValues={{ password: "" }}
+        onSubmit={async (values, { setErrors }) => {
           setTokenError("");
-          const response = await changePassword({newPassword: values.password, token});
+          const response = await changePassword({
+            newPassword: values.password,
+            token,
+          });
 
           if (response.data?.changePassword.errors) {
             const errorMap = toErrorMap(response.data.changePassword.errors);
@@ -36,7 +40,7 @@ const ChangePassword: NextPage<{token: string}> = ({token}) => {
           }
         }}
       >
-        {({isSubmitting}) => (
+        {({ isSubmitting }) => (
           <Form>
             <InputField
               name="password"
@@ -46,7 +50,17 @@ const ChangePassword: NextPage<{token: string}> = ({token}) => {
               mt="8px"
             />
 
-            {tokenError ? <Alert status="error" mt="8px">{tokenError}</Alert> : null}
+            {tokenError ? (
+              <Flex direction={"column"}>
+                <Alert status="error" mt="8px">
+                  {tokenError}
+                </Alert>
+
+                <NextLink href="/forgot-password">
+                  <Link>Click here to get a new token.</Link>
+                </NextLink>
+              </Flex>
+            ) : null}
 
             <Button
               mt="16px"
@@ -61,12 +75,14 @@ const ChangePassword: NextPage<{token: string}> = ({token}) => {
       </Formik>
     </Wrapper>
   );
-}
+};
 
-ChangePassword.getInitialProps = ({query}) => {
+ChangePassword.getInitialProps = ({ query }) => {
   return {
-    token: query.token as string
-  }
-}
+    token: query.token as string,
+  };
+};
 
-export default withUrqlClient(createUrqlClient, {ssr: false})(ChangePassword as FunctionComponent);
+export default withUrqlClient(createUrqlClient, { ssr: false })(
+  ChangePassword as FunctionComponent
+);
