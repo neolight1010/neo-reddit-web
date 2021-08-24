@@ -8,6 +8,8 @@ import { Wrapper } from "../components/Wrapper";
 import { useLoginMutation } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
+import NextLink from "next/link";
+import { Flex, Link } from "@chakra-ui/react";
 
 export interface loginProps {}
 
@@ -43,13 +45,20 @@ export function login(_props: loginProps): ReactElement | null {
               type="password"
               mt="8px"
             />
+
+            <Flex>
+              <NextLink href="/forgot-password">
+                <Link ml="auto">Forgot your password?</Link>
+              </NextLink>
+            </Flex>
+
             <Button
-              mt="16px"
+              mt="8px"
               type="submit"
               colorScheme="teal"
               isLoading={isSubmitting}
             >
-              Register
+              Login
             </Button>
           </Form>
         )}
