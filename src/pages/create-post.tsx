@@ -6,24 +6,21 @@ import React, { ReactElement } from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { toErrorMap } from "../utils/toErrorMap";
 import { useCreatePostMutation } from "../generated/graphql";
 
 export interface createPostProps {}
 
-export function createPost(props: createPostProps): ReactElement | null {
+export function createPost(_props: createPostProps): ReactElement | null {
   const [_createPostData, createPost] = useCreatePostMutation();
 
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ title: "", text: "" }}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async (values, _helpers) => {
           const response = await createPost(values);
 
-          if (response.error) {
-            setErrors({ text: "You must log in to create a post." });
-          } else {
+          if (!response.error) {
             router.push("/");
           }
         }}
