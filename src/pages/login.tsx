@@ -46,9 +46,13 @@ export function login(_props: loginProps): ReactElement | null {
               mt="8px"
             />
 
-            <Flex>
+            <Flex direction="column">
               <NextLink href="/forgot-password">
                 <Link ml="auto">Forgot your password?</Link>
+              </NextLink>
+
+              <NextLink href="/register">
+                <Link ml="auto">Register</Link>
               </NextLink>
             </Flex>
 
