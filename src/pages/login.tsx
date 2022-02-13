@@ -30,7 +30,12 @@ export function login(_props: loginProps): ReactElement | null {
             if (response.data?.login.errors) {
               setErrors(toErrorMap(response.data.login.errors));
             } else if (response.data?.login.user) {
-              router.push("/");
+              let next = "/";
+
+              if (typeof router.query.next === "string")
+                next = router.query.next
+
+              router.push(next);
             }
           }}
         >
