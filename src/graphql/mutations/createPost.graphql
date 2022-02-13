@@ -1,5 +1,5 @@
 mutation CreatePost($title: String!, $text: String!) {
-  createPost(input: {title: $title, text: $text}) {
+  createPost(title: $title, text: $text) {
     id
   }
 }

@@ -16,11 +16,6 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type CreatePostInput = {
-  title: Scalars['String'];
-  text: Scalars['String'];
-};
-
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -43,7 +38,8 @@ export type Mutation = {
 
 
 export type MutationCreatePostArgs = {
-  input: CreatePostInput;
+  text: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -96,6 +92,12 @@ export type Query = {
   posts: Array<Post>;
   post?: Maybe<Post>;
   me: UserResponse;
+};
+
+
+export type QueryPostsArgs = {
+  cursor?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
@@ -278,7 +280,7 @@ export function useChangePasswordMutation() {
 };
 export const CreatePostDocument = gql`
     mutation CreatePost($title: String!, $text: String!) {
-  createPost(input: {title: $title, text: $text}) {
+  createPost(title: $title, text: $text) {
     id
   }
 }
