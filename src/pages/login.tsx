@@ -9,7 +9,8 @@ import { useLoginMutation } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
 import NextLink from "next/link";
-import { Flex, Link } from "@chakra-ui/react";
+import { Box, Flex, Link } from "@chakra-ui/react";
+import {NavBar} from "../components/NavBar";
 
 export interface loginProps {}
 
@@ -18,56 +19,59 @@ export function login(_props: loginProps): ReactElement | null {
   const router = useRouter();
 
   return (
-    <Wrapper variant="small">
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        onSubmit={async (values, { setErrors }) => {
-          const response = await login(values);
+    <Box>
+      <NavBar />
+      <Wrapper variant="small">
+        <Formik
+          initialValues={{ username: "", password: "" }}
+          onSubmit={async (values, { setErrors }) => {
+            const response = await login(values);
 
-          if (response.data?.login.errors) {
-            setErrors(toErrorMap(response.data.login.errors));
-          } else if (response.data?.login.user) {
-            router.push("/");
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <InputField
-              name="username"
-              label="Username"
-              placeholder="your_username"
-            />
-            <InputField
-              name="password"
-              label="Password"
-              placeholder="your_password"
-              type="password"
-              mt="8px"
-            />
+            if (response.data?.login.errors) {
+              setErrors(toErrorMap(response.data.login.errors));
+            } else if (response.data?.login.user) {
+              router.push("/");
+            }
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <InputField
+                name="username"
+                label="Username"
+                placeholder="your_username"
+              />
+              <InputField
+                name="password"
+                label="Password"
+                placeholder="your_password"
+                type="password"
+                mt="8px"
+              />
 
-            <Flex direction="column">
-              <NextLink href="/forgot-password">
-                <Link ml="auto">Forgot your password?</Link>
-              </NextLink>
+              <Flex direction="column">
+                <NextLink href="/forgot-password">
+                  <Link ml="auto">Forgot your password?</Link>
+                </NextLink>
 
-              <NextLink href="/register">
-                <Link ml="auto">Register</Link>
-              </NextLink>
-            </Flex>
+                <NextLink href="/register">
+                  <Link ml="auto">Register</Link>
+                </NextLink>
+              </Flex>
 
-            <Button
-              mt="8px"
-              type="submit"
-              colorScheme="teal"
-              isLoading={isSubmitting}
-            >
-              Login
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
+              <Button
+                mt="8px"
+                type="submit"
+                colorScheme="teal"
+                isLoading={isSubmitting}
+              >
+                Login
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Wrapper>
+    </Box>
   );
 }
 
