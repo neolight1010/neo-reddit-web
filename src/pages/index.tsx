@@ -3,11 +3,19 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { Box, Flex, Heading, Stack } from "@chakra-ui/layout";
 import { usePostsQuery } from "../generated/graphql";
 import NextLink from "next/link";
-import { Link, Text } from "@chakra-ui/react";
+import { Button, Link, Text } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
 
 const Index = () => {
-  const [postsData, _execPostsQuery] = usePostsQuery();
+  const [{ data, fetching }, _execPostsQuery] = usePostsQuery(
+    {
+      variables: {
+        limit: 10,
+      }
+    }
+  );
+
+  if (!data && !fetching) return <Box>Posts query failed...</Box>;
 
   return (
     <Layout>
@@ -19,19 +27,24 @@ const Index = () => {
         </NextLink>
       </Flex>
 
-      { !postsData.data
-        ? <Box>Loading...</Box>
-        : <Stack spacing={8}>
-          {
-            postsData.data.posts.map((post) => (
-              <Box key={post.id} p={5} shadow="md" borderWidth="1px">
-                <Heading fontSize="xl">{post.title}</Heading>
-                <Text mt={4}>{post.textSnippet}</Text>
-              </Box>
-            ))
-          }
-          </Stack>
-      }
+      {!data && fetching ? (
+        <Box>Loading...</Box>
+      ) : (
+        <Stack spacing={8}>
+          {data!.posts.map((post) => (
+            <Box key={post.id} p={5} shadow="md" borderWidth="1px">
+              <Heading fontSize="xl">{post.title}</Heading>
+              <Text mt={4}>{post.textSnippet}</Text>
+            </Box>
+          ))}
+        </Stack>
+      )}
+
+      {data ? (
+        <Flex>
+          <Button isLoading={fetching} m="auto" my={8}>Load more</Button>
+        </Flex>
+      ) : null}
     </Layout>
   );
 };
