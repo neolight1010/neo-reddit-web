@@ -1,6 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { Box, Heading, Stack } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Stack } from "@chakra-ui/layout";
 import { usePostsQuery } from "../generated/graphql";
 import NextLink from "next/link";
 import { Link, Text } from "@chakra-ui/react";
@@ -11,9 +11,13 @@ const Index = () => {
 
   return (
     <Layout>
-      <NextLink href="/create-post">
-        <Link>Create Post</Link>
-      </NextLink>
+      <Flex mb={3} align="center">
+        <Heading>NeoReddit</Heading>
+
+        <NextLink href="/create-post">
+          <Link ml="auto">Create Post</Link>
+        </NextLink>
+      </Flex>
 
       { !postsData.data
         ? <Box>Loading...</Box>
