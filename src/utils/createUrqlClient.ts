@@ -1,7 +1,9 @@
 import { ClientOptions, Exchange } from "@urql/core";
 import { pipe, tap } from "wonka";
-import { dedupExchange, fetchExchange, cacheExchange } from "urql";
+import { dedupExchange, fetchExchange } from "urql";
 import Router from "next/router";
+import { cacheExchange } from "@urql/exchange-graphcache";
+import { cursorPagination } from "./cursorPagination";
 
 const errorExchange: Exchange =
   ({ forward }) =>
@@ -20,6 +22,17 @@ export function createUrqlClient(_ssrExchange: any): ClientOptions {
   return {
     url: "http://localhost:4000/graphql",
     fetchOptions: { credentials: "include" },
-    exchanges: [dedupExchange, cacheExchange, errorExchange, fetchExchange],
+    exchanges: [
+      dedupExchange,
+      cacheExchange({
+        resolvers: {
+          Query: {
+            posts: cursorPagination(),
+          },
+        },
+      }),
+      errorExchange,
+      fetchExchange,
+    ],
   };
 }
