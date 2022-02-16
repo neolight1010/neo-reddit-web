@@ -25,6 +25,11 @@ export function createUrqlClient(_ssrExchange: any): ClientOptions {
     exchanges: [
       dedupExchange,
       cacheExchange({
+        keys: {
+          PaginatedPosts: () => null,
+          FieldError: () => null,
+          UserResponse: () => null,
+        },
         resolvers: {
           Query: {
             posts: cursorPagination(),

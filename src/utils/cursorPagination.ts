@@ -1,5 +1,5 @@
-import { Resolver } from "@urql/exchange-graphcache"
-import {stringifyVariables} from "urql";
+import { Resolver } from "@urql/exchange-graphcache";
+import { stringifyVariables } from "urql";
 
 export const cursorPagination = (): Resolver => {
   return (_parent, fieldArgs, cache, info) => {
@@ -13,15 +13,32 @@ export const cursorPagination = (): Resolver => {
     }
 
     const fieldKey = `${fieldName}(${stringifyVariables(fieldArgs)})`;
-    const isItInTheCache = !!cache.resolve(entityKey, fieldKey);
+    const isItInTheCache = !!cache.resolve(
+      cache.resolve(entityKey, fieldKey) as string,
+      "posts"
+    );
+
     info.partial = !isItInTheCache;
+
+    let hasMore = true;
 
     const results: string[] = [];
     for (let fieldInfo of fieldInfos) {
-      const data = cache.resolve(entityKey, fieldInfo.fieldKey) as string[];
+      const key = cache.resolve(entityKey, fieldInfo.fieldKey) as string;
+      const data = cache.resolve(key, "posts") as string[];
+
+      const _hasMore = !!cache.resolve(key, "hasMore");
+      if (!_hasMore) {
+        hasMore = _hasMore;
+      }
+
       results.push(...data);
     }
 
-    return results;
+    return {
+      __typename: "PaginatedPosts",
+      hasMore,
+      posts: results,
+    };
   };
 };
