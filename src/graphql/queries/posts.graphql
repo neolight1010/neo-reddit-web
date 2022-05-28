@@ -6,6 +6,11 @@ query Posts($limit: Int, $cursor: DateTime) {
       textSnippet
       createdAt
       updatedAt
+
+      author {
+        id
+        username
+      }
     }
     hasMore
   }

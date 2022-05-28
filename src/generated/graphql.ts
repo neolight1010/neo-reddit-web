@@ -28,6 +28,7 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost?: Maybe<Scalars['Boolean']>;
+  vote: Scalars['Boolean'];
   /** Returns true if the reset password email was sent. */
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
@@ -51,6 +52,12 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationVoteArgs = {
+  direction: VoteDirection;
+  postId: Scalars['ID'];
 };
 
 
@@ -117,6 +124,7 @@ export type User = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
+  posts: Array<Post>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -132,6 +140,11 @@ export type UsernamePasswordInput = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
+
+export enum VoteDirection {
+  Up = 'UP',
+  Down = 'DOWN'
+}
 
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
@@ -254,6 +267,10 @@ export type PostsQuery = (
     & { posts: Array<(
       { __typename?: 'Post' }
       & Pick<Post, 'id' | 'title' | 'textSnippet' | 'createdAt' | 'updatedAt'>
+      & { author: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
     )> }
   ) }
 );
@@ -365,6 +382,10 @@ export const PostsDocument = gql`
       textSnippet
       createdAt
       updatedAt
+      author {
+        id
+        username
+      }
     }
     hasMore
   }
