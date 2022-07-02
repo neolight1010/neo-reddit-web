@@ -1,12 +1,13 @@
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { Box, Flex, Heading, Stack } from "@chakra-ui/layout";
-import { usePostsQuery } from "../generated/graphql";
+import { Post, usePostsQuery } from "../generated/graphql";
 import NextLink from "next/link";
 import { Button, Link, Text } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
 import { useState } from "react";
 import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
+import {PostCard} from "../components/PostCard";
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -36,23 +37,7 @@ const Index = () => {
       ) : (
         <Stack spacing={8} mb={8}>
           {data!.posts.posts.map((post) => (
-            <Flex key={post.id} p={5} shadow="md" borderWidth="1px">
-              <Flex flexDir="column" align="center" mr={3}>
-                <ChevronUpIcon fontSize="medium" />
-
-                {post.points}
-
-                <ChevronDownIcon fontSize="medium" />
-              </Flex>
-
-              <Box>
-                <Heading fontSize="xl">{post.title}</Heading>
-
-                {post.author.username}
-
-                <Text mt={4}>{post.textSnippet}</Text>
-              </Box>
-            </Flex>
+            <PostCard post={post as Post}></PostCard>
           ))}
         </Stack>
       )}
