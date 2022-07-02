@@ -1,3 +1,4 @@
+import {IconButton} from "@chakra-ui/button";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { Post } from "../generated/graphql";
@@ -10,11 +11,14 @@ export const PostCard = ({ post }: PostCardProps): JSX.Element => {
   return (
     <Flex key={post.id} p={5} shadow="md" borderWidth="1px">
       <Flex flexDir="column" align="center" mr={3}>
-        <ChevronUpIcon fontSize="medium" />
+        <IconButton aria-label="Upvote" icon={<ChevronUpIcon />}></IconButton>
 
         {post.points}
 
-        <ChevronDownIcon fontSize="medium" />
+        <IconButton
+          aria-label="Downvote"
+          icon={<ChevronDownIcon />}
+        ></IconButton>
       </Flex>
 
       <Box>
