@@ -15,6 +15,7 @@ const Index = () => {
 
   const [{ data, fetching }, _execPostsQuery] = usePostsQuery({
     variables,
+    requestPolicy: "network-only",
   });
 
   if (!data && !fetching) return <Box>Posts query failed...</Box>;
