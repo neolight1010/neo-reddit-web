@@ -6,6 +6,7 @@ query Posts($limit: Int, $cursor: DateTime) {
       textSnippet
       createdAt
       updatedAt
+      points
 
       author {
         id

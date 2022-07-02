@@ -6,6 +6,7 @@ import NextLink from "next/link";
 import { Button, Link, Text } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
 import { useState } from "react";
+import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -35,13 +36,23 @@ const Index = () => {
       ) : (
         <Stack spacing={8} mb={8}>
           {data!.posts.posts.map((post) => (
-            <Box key={post.id} p={5} shadow="md" borderWidth="1px">
-              <Heading fontSize="xl">{post.title}</Heading>
+            <Flex key={post.id} p={5} shadow="md" borderWidth="1px">
+              <Flex flexDir="column" align="center" mr={3}>
+                <ChevronUpIcon fontSize="medium" />
 
-              {post.author.username}
+                {post.points}
 
-              <Text mt={4}>{post.textSnippet}</Text>
-            </Box>
+                <ChevronDownIcon fontSize="medium" />
+              </Flex>
+
+              <Box>
+                <Heading fontSize="xl">{post.title}</Heading>
+
+                {post.author.username}
+
+                <Text mt={4}>{post.textSnippet}</Text>
+              </Box>
+            </Flex>
           ))}
         </Stack>
       )}
