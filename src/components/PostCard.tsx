@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { Post, PostsQuery } from "../generated/graphql";
+import { PostsQuery } from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 
 interface PostCardProps {
