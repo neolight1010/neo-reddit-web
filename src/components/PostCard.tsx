@@ -1,15 +1,15 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { Post } from "../generated/graphql";
+import { Post, PostsQuery } from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 
 interface PostCardProps {
-  post: Post;
+  post: PostsQuery["posts"]["posts"][0];
 }
 
 export const PostCard = ({ post }: PostCardProps): JSX.Element => {
   return (
     <Flex key={post.id} p={5} shadow="md" borderWidth="1px">
-      <VoteSection points={post.points} />
+      <VoteSection post={post} />
 
       <Box>
         <Heading fontSize="xl">{post.title}</Heading>
