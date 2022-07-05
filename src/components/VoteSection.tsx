@@ -1,6 +1,7 @@
 import { IconButton } from "@chakra-ui/button";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Flex } from "@chakra-ui/layout";
+import {useState} from "react";
 import { PostsQuery, useVoteMutation, VoteDirection } from "../generated/graphql";
 
 interface VoteSectionProps {
@@ -8,13 +9,20 @@ interface VoteSectionProps {
 }
 
 export const VoteSection = ({ post }: VoteSectionProps): JSX.Element => {
+  const [points, setPoints] = useState(post.points);
   const [, vote] = useVoteMutation();
 
-  const onVoteClick = (direction: VoteDirection) => {
-    vote({
+  const onVoteClick = async (direction: VoteDirection) => {
+    const voteResult = await vote({
       direction,
       postId: post.id.toString(),
-    })
+    });
+
+    const newPoints = voteResult.data?.vote;
+
+    if (newPoints !== undefined) {
+      setPoints(newPoints);
+    }
   };
 
   return (
@@ -25,7 +33,7 @@ export const VoteSection = ({ post }: VoteSectionProps): JSX.Element => {
         onClick={() => onVoteClick(VoteDirection.Up)}
       ></IconButton>
 
-      {post.points}
+      {points}
 
       <IconButton
         aria-label="Downvote"
