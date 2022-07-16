@@ -82,9 +82,9 @@ export type MutationLoginArgs = {
   username: Scalars['String'];
 };
 
-export type PaginatedPosts = {
-  __typename?: 'PaginatedPosts';
-  posts: Array<Post>;
+export type PaginatedPostsWithVoteInfo = {
+  __typename?: 'PaginatedPostsWithVoteInfo';
+  postsWithUserVote: Array<PostWithUserVote>;
   hasMore: Scalars['Boolean'];
 };
 
@@ -100,10 +100,16 @@ export type Post = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type PostWithUserVote = {
+  __typename?: 'PostWithUserVote';
+  post: Post;
+  userVote?: Maybe<VoteDirection>;
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  posts: PaginatedPosts;
+  posts: PaginatedPostsWithVoteInfo;
   post?: Maybe<Post>;
   me: UserResponse;
 };
@@ -273,14 +279,18 @@ export type PostsQueryVariables = Exact<{
 export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: (
-    { __typename?: 'PaginatedPosts' }
-    & Pick<PaginatedPosts, 'hasMore'>
-    & { posts: Array<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'textSnippet' | 'createdAt' | 'updatedAt' | 'points'>
-      & { author: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
+    { __typename?: 'PaginatedPostsWithVoteInfo' }
+    & Pick<PaginatedPostsWithVoteInfo, 'hasMore'>
+    & { postsWithUserVote: Array<(
+      { __typename?: 'PostWithUserVote' }
+      & Pick<PostWithUserVote, 'userVote'>
+      & { post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title' | 'textSnippet' | 'createdAt' | 'updatedAt' | 'points'>
+        & { author: (
+          { __typename?: 'User' }
+          & Pick<User, 'id' | 'username'>
+        ) }
       ) }
     )> }
   ) }
@@ -396,17 +406,20 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const PostsDocument = gql`
     query Posts($limit: Int, $cursor: DateTime) {
   posts(limit: $limit, cursor: $cursor) {
-    posts {
-      id
-      title
-      textSnippet
-      createdAt
-      updatedAt
-      points
-      author {
+    postsWithUserVote {
+      post {
         id
-        username
+        title
+        textSnippet
+        createdAt
+        updatedAt
+        points
+        author {
+          id
+          username
+        }
       }
+      userVote
     }
     hasMore
   }

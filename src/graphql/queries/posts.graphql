@@ -1,17 +1,20 @@
 query Posts($limit: Int, $cursor: DateTime) {
   posts(limit: $limit, cursor: $cursor) {
-    posts {
-      id
-      title
-      textSnippet
-      createdAt
-      updatedAt
-      points
-
-      author {
+    postsWithUserVote {
+      post {
         id
-        username
+        title
+        textSnippet
+        createdAt
+        updatedAt
+        points
+
+        author {
+          id
+          username
+        }
       }
+      userVote
     }
     hasMore
   }

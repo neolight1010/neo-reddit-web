@@ -35,7 +35,7 @@ const Index = () => {
         <Box>Loading...</Box>
       ) : (
         <Stack spacing={8} mb={8}>
-          {data!.posts.posts.map((post) => (
+          {data!.posts.postsWithUserVote.map(({post}) => (
             <PostCard post={post} key={post.id}></PostCard>
           ))}
         </Stack>
