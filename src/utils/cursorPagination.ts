@@ -25,7 +25,7 @@ export const cursorPagination = (): Resolver => {
     const results: string[] = [];
     for (let fieldInfo of fieldInfos) {
       const key = cache.resolve(entityKey, fieldInfo.fieldKey) as string;
-      const data = cache.resolve(key, "posts") as string[];
+      const data = cache.resolve(key, "postsWithUserVote") as string[];
 
       const _hasMore = !!cache.resolve(key, "hasMore");
       if (!_hasMore) {
@@ -36,7 +36,7 @@ export const cursorPagination = (): Resolver => {
     }
 
     return {
-      __typename: "PaginatedPosts",
+      __typename: "PaginatedPostsWithVoteInfo",
       hasMore,
       posts: results,
     };

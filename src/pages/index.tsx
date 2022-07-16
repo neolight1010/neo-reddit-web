@@ -35,7 +35,7 @@ const Index = () => {
         <Box>Loading...</Box>
       ) : (
         <Stack spacing={8} mb={8}>
-          {data!.posts.postsWithUserVote.map(({post}) => (
+          {data!.posts.postsWithUserVote.map(({ post }) => (
             <PostCard post={post} key={post.id}></PostCard>
           ))}
         </Stack>
@@ -50,7 +50,10 @@ const Index = () => {
             onClick={() => {
               setVariables({
                 ...variables,
-                cursor: data.posts.posts[data.posts.posts.length - 1].createdAt,
+                cursor:
+                  data.posts.postsWithUserVote[
+                    data.posts.postsWithUserVote.length - 1
+                  ].post.createdAt,
               });
             }}
           >

@@ -26,7 +26,7 @@ export function createUrqlClient(_ssrExchange: any): ClientOptions {
       dedupExchange,
       cacheExchange({
         keys: {
-          PaginatedPosts: () => null,
+          PaginatedPostsWithVoteInfo: () => null,
           FieldError: () => null,
           UserResponse: () => null,
         },
