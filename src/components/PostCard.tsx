@@ -3,13 +3,15 @@ import { PostsQuery } from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 
 interface PostCardProps {
-  post: PostsQuery["posts"]["posts"][0];
+  postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
 }
 
-export const PostCard = ({ post }: PostCardProps): JSX.Element => {
+export const PostCard = ({ postWithUserVote }: PostCardProps): JSX.Element => {
+  const { post, userVote } = postWithUserVote;
+
   return (
     <Flex key={post.id} p={5} shadow="md" borderWidth="1px">
-      <VoteSection post={post} />
+      <VoteSection postWithUserVote={postWithUserVote} />
 
       <Box>
         <Heading fontSize="xl">{post.title}</Heading>

@@ -5,10 +5,12 @@ import {useState} from "react";
 import { PostsQuery, useVoteMutation, VoteDirection } from "../generated/graphql";
 
 interface VoteSectionProps {
-  post: PostsQuery["posts"]["posts"][0];
+  postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
 }
 
-export const VoteSection = ({ post }: VoteSectionProps): JSX.Element => {
+export const VoteSection = ({ postWithUserVote }: VoteSectionProps): JSX.Element => {
+  const {post, userVote} = postWithUserVote;
+
   const [points, setPoints] = useState(post.points);
   const [, vote] = useVoteMutation();
 
@@ -30,6 +32,7 @@ export const VoteSection = ({ post }: VoteSectionProps): JSX.Element => {
       <IconButton
         aria-label="Upvote"
         icon={<ChevronUpIcon />}
+        colorScheme={userVote == VoteDirection.Up ? "green" : undefined}
         onClick={() => onVoteClick(VoteDirection.Up)}
       ></IconButton>
 
@@ -38,6 +41,7 @@ export const VoteSection = ({ post }: VoteSectionProps): JSX.Element => {
       <IconButton
         aria-label="Downvote"
         icon={<ChevronDownIcon />}
+        colorScheme={userVote == VoteDirection.Down ? "red" : undefined}
         onClick={() => onVoteClick(VoteDirection.Down)}
       ></IconButton>
     </Flex>
