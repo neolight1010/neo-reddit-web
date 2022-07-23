@@ -19,7 +19,11 @@ export function NavBar(_props: NavBarProps): ReactElement | null {
   } else {
     if (meData.data?.me.user) {
       body = (
-        <HStack>
+        <HStack spacing={5}>
+          <NextLink href="/create-post">
+            <Link ml="auto">Create Post</Link>
+          </NextLink>
+
           <Box>{meData.data.me.user?.username}</Box>
           <Button
             variant="link"
