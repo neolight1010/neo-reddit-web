@@ -8,6 +8,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { useCreatePostMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useIsAuth } from "../utils/useIsAuth";
+import {Layout} from "../components/Layout";
 
 export interface createPostProps {}
 
@@ -18,7 +19,7 @@ export function createPost(_props: createPostProps): ReactElement | null {
   useIsAuth();
 
   return (
-    <Wrapper variant="small">
+    <Layout variant="small">
       <Formik
         initialValues={{ title: "", text: "" }}
         onSubmit={async (values, _helpers) => {
@@ -50,7 +51,7 @@ export function createPost(_props: createPostProps): ReactElement | null {
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </Layout>
   );
 }
 
