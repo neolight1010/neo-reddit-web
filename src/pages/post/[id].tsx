@@ -1,3 +1,4 @@
+import { Box, Heading, Text } from "@chakra-ui/layout";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { Layout } from "../../components/Layout";
@@ -23,7 +24,21 @@ export const Post = (): JSX.Element => {
     return <Layout>{"Loading..."}</Layout>;
   }
 
-  return <Layout>{data?.post?.text}</Layout>;
+  if (!data?.post) {
+    return (
+      <Layout>
+        <Box>Could not find post.</Box>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <Heading mb={4}>{data.post.title}</Heading>
+
+      <Text>{data.post.text}</Text>
+    </Layout>
+  );
 };
 
 export default withUrqlClient(createUrqlClient, { ssr: true })(Post);
