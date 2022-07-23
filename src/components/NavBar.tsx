@@ -54,6 +54,13 @@ export function NavBar(_props: NavBarProps): ReactElement | null {
 
   return (
     <Flex bg="salmon" p="4">
+      <Box>
+        <Link>
+          <NextLink href="/">
+            NeoReddit
+          </NextLink>
+        </Link>
+      </Box>
       <Box ml="auto">{body}</Box>
     </Flex>
   );
