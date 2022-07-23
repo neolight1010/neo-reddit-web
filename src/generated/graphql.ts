@@ -46,12 +46,12 @@ export type MutationCreatePostArgs = {
 
 export type MutationUpdatePostArgs = {
   title?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 
 export type MutationDeletePostArgs = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 
@@ -90,7 +90,7 @@ export type PaginatedPostsWithVoteInfo = {
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['Float'];
+  id: Scalars['ID'];
   title: Scalars['String'];
   text: Scalars['String'];
   textSnippet: Scalars['String'];
@@ -122,7 +122,7 @@ export type QueryPostsArgs = {
 
 
 export type QueryPostArgs = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 export type User = {
@@ -270,6 +270,23 @@ export type MeQuery = (
   ) }
 );
 
+export type PostQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PostQuery = (
+  { __typename?: 'Query' }
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'title' | 'text' | 'createdAt' | 'updatedAt' | 'points'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
+);
+
 export type PostsQueryVariables = Exact<{
   limit?: Maybe<Scalars['Int']>;
   cursor?: Maybe<Scalars['DateTime']>;
@@ -402,6 +419,26 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const PostDocument = gql`
+    query Post($id: ID!) {
+  post(id: $id) {
+    id
+    title
+    text
+    createdAt
+    updatedAt
+    points
+    author {
+      id
+      username
+    }
+  }
+}
+    `;
+
+export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
 };
 export const PostsDocument = gql`
     query Posts($limit: Int, $cursor: DateTime) {
