@@ -5,6 +5,7 @@ import NextLink from "next/link";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { useRouter } from "next/dist/client/router";
 import isServer from "../utils/isServer";
+import {CreatePostButton} from "./CreatePostButton";
 
 export interface NavBarProps {}
 
@@ -20,9 +21,7 @@ export function NavBar(_props: NavBarProps): ReactElement | null {
     if (meData.data?.me.user) {
       body = (
         <HStack spacing={5}>
-          <NextLink href="/create-post">
-            <Link ml="auto">Create Post</Link>
-          </NextLink>
+          <CreatePostButton />
 
           <Box>{meData.data.me.user?.username}</Box>
           <Button
@@ -60,9 +59,7 @@ export function NavBar(_props: NavBarProps): ReactElement | null {
     <Flex bg="salmon" p="4" align="center">
       <Box>
         <Heading mr={6} size="md">
-          <NextLink href="/">
-            NeoReddit
-          </NextLink>
+          <NextLink href="/">NeoReddit</NextLink>
         </Heading>
       </Box>
       <Box ml="auto">{body}</Box>
