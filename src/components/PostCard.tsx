@@ -1,9 +1,9 @@
 import { Box, Flex, Heading, Text, Link, Spacer } from "@chakra-ui/layout";
-import { PostsQuery } from "../generated/graphql";
+import { PostsQuery, useDeletePostMutation } from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 import NextLink from "next/link";
 import { IconButton } from "@chakra-ui/button";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SpinnerIcon } from "@chakra-ui/icons";
 
 interface PostCardProps {
   postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
@@ -29,6 +29,12 @@ interface PostCardHeaderProps {
 }
 
 const PostCardHeader = ({ post }: PostCardHeaderProps): JSX.Element => {
+  const [{ fetching: deletingPost }, deletePost] = useDeletePostMutation();
+
+  const onDeletePost = () => {
+    deletePost({ id: post.id });
+  };
+
   return (
     <Flex>
       <Box>
@@ -43,8 +49,12 @@ const PostCardHeader = ({ post }: PostCardHeaderProps): JSX.Element => {
 
       <Spacer />
 
-      <IconButton aria-label="Delete post" colorScheme="red">
-        <DeleteIcon />
+      <IconButton
+        aria-label="Delete post"
+        colorScheme="red"
+        onClick={onDeletePost}
+      >
+        {deletingPost ? <SpinnerIcon /> : <DeleteIcon />}
       </IconButton>
     </Flex>
   );
