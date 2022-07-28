@@ -17,26 +17,35 @@ export const PostCard = ({ postWithUserVote }: PostCardProps): JSX.Element => {
       <VoteSection postWithUserVote={postWithUserVote} />
 
       <Box w="100%" h="100%">
-        <Flex>
-          <Box>
-            <NextLink href="/post/[id]" as={`/post/${post.id}`}>
-              <Link>
-                <Heading fontSize="xl">{post.title}</Heading>
-              </Link>
-            </NextLink>
-
-            {post.author.username}
-          </Box>
-
-          <Spacer />
-
-          <IconButton aria-label="Delete post" colorScheme="red">
-            <DeleteIcon />
-          </IconButton>
-        </Flex>
-
+        <PostCardHeader post={post} />
         <Text mt={4}>{post.textSnippet}</Text>
       </Box>
+    </Flex>
+  );
+};
+
+interface PostCardHeaderProps {
+  post: PostsQuery["posts"]["postsWithUserVote"][0]["post"];
+}
+
+const PostCardHeader = ({ post }: PostCardHeaderProps): JSX.Element => {
+  return (
+    <Flex>
+      <Box>
+        <NextLink href="/post/[id]" as={`/post/${post.id}`}>
+          <Link>
+            <Heading fontSize="xl">{post.title}</Heading>
+          </Link>
+        </NextLink>
+
+        {post.author.username}
+      </Box>
+
+      <Spacer />
+
+      <IconButton aria-label="Delete post" colorScheme="red">
+        <DeleteIcon />
+      </IconButton>
     </Flex>
   );
 };
