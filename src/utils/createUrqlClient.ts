@@ -4,6 +4,7 @@ import { dedupExchange, fetchExchange } from "urql";
 import Router from "next/router";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { cursorPagination } from "./cursorPagination";
+import { DeletePostMutationVariables } from "../generated/graphql";
 
 const errorExchange: Exchange =
   ({ forward }) =>
@@ -33,6 +34,18 @@ export function createUrqlClient(_ssrExchange: any): ClientOptions {
         resolvers: {
           Query: {
             posts: cursorPagination(),
+          },
+        },
+        updates: {
+          Mutation: {
+            deletePost: (
+              _result,
+              args: DeletePostMutationVariables,
+              cache,
+              _info
+            ) => {
+              cache.invalidate({ __typename: "Post", id: args.id });
+            },
           },
         },
       }),
