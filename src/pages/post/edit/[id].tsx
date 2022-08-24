@@ -2,7 +2,10 @@ import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { EditPostForm } from "../../../components/CreatePostForm";
 import { Layout } from "../../../components/Layout";
-import { usePostQuery, useUpdatePostMutation } from "../../../generated/graphql";
+import {
+  usePostQuery,
+  useUpdatePostMutation,
+} from "../../../generated/graphql";
 import { createUrqlClient } from "../../../utils/createUrqlClient";
 
 const INVALID_POST_ID = "-1";
@@ -29,8 +32,9 @@ const EditPost = (): JSX.Element => {
             title: values.title,
             text: values.text,
           });
-        }}
 
+          router.push("/post/[id]", `/post/${postId}`);
+        }}
         initialValues={{
           title: postData?.post?.title || "",
           text: postData?.post?.text || "",
