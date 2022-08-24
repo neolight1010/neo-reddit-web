@@ -3,7 +3,7 @@ import { PostsQuery, useDeletePostMutation } from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 import NextLink from "next/link";
 import { IconButton } from "@chakra-ui/button";
-import { DeleteIcon, SpinnerIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, SpinnerIcon } from "@chakra-ui/icons";
 
 interface PostCardProps {
   postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
@@ -48,6 +48,12 @@ const PostCardHeader = ({ post }: PostCardHeaderProps): JSX.Element => {
       </Box>
 
       <Spacer />
+
+      <NextLink href="/post/edit/[id]" as={`/post/edit/${post.id}`}>
+        <IconButton aria-label="Edit post" mr={2} as={Link}>
+          <EditIcon />
+        </IconButton>
+      </NextLink>
 
       <IconButton
         aria-label="Delete post"
