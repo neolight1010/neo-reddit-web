@@ -4,16 +4,16 @@ import React from "react";
 import { InputField } from "./InputField";
 
 interface CreatePostFormProps {
-  initialValues?: CreatPostFormData;
-  onSubmit: (values: CreatPostFormData, helpers: FormikHelpers<CreatPostFormData>) => Promise<void>;
+  initialValues?: EditPostFormData;
+  onSubmit: (values: EditPostFormData, helpers: FormikHelpers<EditPostFormData>) => Promise<void>;
 }
 
-interface CreatPostFormData {
+interface EditPostFormData {
   title: string;
   text: string;
 }
 
-export const CreatePostForm = ({ onSubmit, initialValues }: CreatePostFormProps): JSX.Element => {
+export const EditPostForm = ({ onSubmit, initialValues }: CreatePostFormProps): JSX.Element => {
   return (
     <Formik
       initialValues={initialValues ?? { title: "", text: "" }}

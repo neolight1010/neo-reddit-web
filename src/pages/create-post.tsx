@@ -5,7 +5,7 @@ import { useCreatePostMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useIsAuth } from "../utils/useIsAuth";
 import { Layout } from "../components/Layout";
-import { CreatePostForm } from "../components/CreatePostForm";
+import { EditPostForm } from "../components/CreatePostForm";
 
 export interface createPostProps {}
 
@@ -17,7 +17,7 @@ export function createPost(_props: createPostProps): ReactElement | null {
 
   return (
     <Layout variant="small">
-      <CreatePostForm
+      <EditPostForm
         onSubmit={async (values, _helpers) => {
           const response = await createPost(values);
 

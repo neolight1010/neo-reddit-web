@@ -1,6 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
-import { CreatePostForm } from "../../../components/CreatePostForm";
+import { EditPostForm } from "../../../components/CreatePostForm";
 import { Layout } from "../../../components/Layout";
 import { usePostQuery, useUpdatePostMutation } from "../../../generated/graphql";
 import { createUrqlClient } from "../../../utils/createUrqlClient";
@@ -22,7 +22,7 @@ const EditPost = (): JSX.Element => {
 
   return (
     <Layout>
-      <CreatePostForm
+      <EditPostForm
         onSubmit={async (values) => {
           await updatePost({
             id: postId,
