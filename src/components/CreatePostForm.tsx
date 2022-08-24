@@ -6,6 +6,8 @@ import { InputField } from "./InputField";
 interface CreatePostFormProps {
   initialValues?: EditPostFormData;
   onSubmit: (values: EditPostFormData, helpers: FormikHelpers<EditPostFormData>) => Promise<void>;
+
+  submitButtonText?: string;
 }
 
 interface EditPostFormData {
@@ -13,7 +15,7 @@ interface EditPostFormData {
   text: string;
 }
 
-export const EditPostForm = ({ onSubmit, initialValues }: CreatePostFormProps): JSX.Element => {
+export const EditPostForm = ({ onSubmit, initialValues, submitButtonText }: CreatePostFormProps): JSX.Element => {
   return (
     <Formik
       initialValues={initialValues ?? { title: "", text: "" }}
@@ -35,7 +37,7 @@ export const EditPostForm = ({ onSubmit, initialValues }: CreatePostFormProps): 
             colorScheme="teal"
             isLoading={isSubmitting}
           >
-            Create Post
+            {submitButtonText ?? "Submit"}
           </Button>
         </Form>
       )}

@@ -25,6 +25,8 @@ export function createPost(_props: createPostProps): ReactElement | null {
             router.push("/");
           }
         }}
+
+        submitButtonText="Create Post"
       />
     </Layout>
   );
