@@ -35,7 +35,8 @@ export function login(_props: loginProps): ReactElement | null {
               if (typeof router.query.next === "string")
                 next = router.query.next
 
-              router.push(next);
+              await router.push(next);
+              router.reload();
             }
           }}
         >
