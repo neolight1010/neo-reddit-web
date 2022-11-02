@@ -1,11 +1,14 @@
 import { Button } from "@chakra-ui/react";
-import { Formik, Form, FormikHelpers,FormikErrors } from "formik";
+import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import React from "react";
 import { InputField } from "./InputField";
 
 interface CreatePostFormProps {
   initialValues?: EditPostFormData;
-  onSubmit: (values: EditPostFormData, helpers: FormikHelpers<EditPostFormData>) => Promise<void>;
+  onSubmit: (
+    values: EditPostFormData,
+    helpers: FormikHelpers<EditPostFormData>
+  ) => Promise<void>;
 
   submitButtonText?: string;
 }
@@ -15,7 +18,11 @@ interface EditPostFormData {
   text: string;
 }
 
-export const EditPostForm = ({ onSubmit, initialValues, submitButtonText }: CreatePostFormProps): JSX.Element => {
+export const EditPostForm = ({
+  onSubmit,
+  initialValues,
+  submitButtonText,
+}: CreatePostFormProps): JSX.Element => {
   return (
     <Formik
       initialValues={initialValues ?? { title: "", text: "" }}
