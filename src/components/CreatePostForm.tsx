@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { Formik, Form, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers,FormikErrors } from "formik";
 import React from "react";
 import { InputField } from "./InputField";
 
@@ -20,6 +20,20 @@ export const EditPostForm = ({ onSubmit, initialValues, submitButtonText }: Crea
     <Formik
       initialValues={initialValues ?? { title: "", text: "" }}
       onSubmit={onSubmit}
+      validate={(values) => {
+        const errors: FormikErrors<EditPostFormData> = {};
+        const emptyFieldError = "Field cannot be empty.";
+
+        if (!values.title) {
+          errors.title = emptyFieldError;
+        }
+
+        if (!values.text) {
+          errors.text = emptyFieldError;
+        }
+
+        return errors;
+      }}
     >
       {({ isSubmitting }) => (
         <Form>
