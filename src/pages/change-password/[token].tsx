@@ -10,7 +10,7 @@ import { createUrqlClient } from "../../utils/createUrqlClient";
 import { toErrorMap } from "../../utils/toErrorMap";
 import { FunctionComponent } from "react";
 import NextLink from "next/link";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const ChangePassword: NextPage = () => {
   const router = useRouter();

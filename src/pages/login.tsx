@@ -10,7 +10,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
 import NextLink from "next/link";
 import { Box, Flex, Link } from "@chakra-ui/react";
-import {NavBar} from "../components/NavBar";
+import { NavBar } from "../components/NavBar";
 
 export interface loginProps {}
 
@@ -33,7 +33,7 @@ export function login(_props: loginProps): ReactElement | null {
               let next = "/";
 
               if (typeof router.query.next === "string")
-                next = router.query.next
+                next = router.query.next;
 
               await router.push(next);
               router.reload();

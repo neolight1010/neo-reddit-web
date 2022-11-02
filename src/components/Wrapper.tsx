@@ -4,8 +4,8 @@ import React, { ReactElement } from "react";
 export type WrapperVariant = "small" | "regular";
 
 export interface WrapperProps {
-  variant?: WrapperVariant
-  children?: React.ReactNode
+  variant?: WrapperVariant;
+  children?: React.ReactNode;
 }
 
 export function Wrapper({

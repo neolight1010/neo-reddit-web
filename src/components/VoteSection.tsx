@@ -1,15 +1,21 @@
 import { IconButton } from "@chakra-ui/button";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Flex } from "@chakra-ui/layout";
-import {useState} from "react";
-import { PostsQuery, useVoteMutation, VoteDirection } from "../generated/graphql";
+import { useState } from "react";
+import {
+  PostsQuery,
+  useVoteMutation,
+  VoteDirection,
+} from "../generated/graphql";
 
 interface VoteSectionProps {
   postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
 }
 
-export const VoteSection = ({ postWithUserVote }: VoteSectionProps): JSX.Element => {
-  const {post, userVote} = postWithUserVote;
+export const VoteSection = ({
+  postWithUserVote,
+}: VoteSectionProps): JSX.Element => {
+  const { post, userVote } = postWithUserVote;
 
   const [points, setPoints] = useState(post.points);
   const [, vote] = useVoteMutation();

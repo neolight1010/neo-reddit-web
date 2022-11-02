@@ -1,5 +1,9 @@
 import { Box, Flex, Heading, Text, Link, Spacer } from "@chakra-ui/layout";
-import { PostsQuery, useDeletePostMutation, useMeQuery } from "../generated/graphql";
+import {
+  PostsQuery,
+  useDeletePostMutation,
+  useMeQuery,
+} from "../generated/graphql";
 import { VoteSection } from "./VoteSection";
 import NextLink from "next/link";
 import { IconButton } from "@chakra-ui/button";
@@ -47,11 +51,9 @@ const PostCardHeader = ({ post }: PostCardHeaderProps): JSX.Element => {
 
       <Spacer />
 
-      {
-        meData?.me.user?.id === post.author.id
-          ? <AuthorButtons post={post} />
-          : null
-      }
+      {meData?.me.user?.id === post.author.id ? (
+        <AuthorButtons post={post} />
+      ) : null}
     </Flex>
   );
 };
@@ -67,19 +69,21 @@ const AuthorButtons = ({ post }: AuthorButtonsProps): JSX.Element => {
     deletePost({ id: post.id });
   };
 
-  return <Box>
-    <NextLink href="/post/edit/[id]" as={`/post/edit/${post.id}`}>
-      <IconButton aria-label="Edit post" mr={2} as={Link}>
-        <EditIcon />
-      </IconButton>
-    </NextLink>
+  return (
+    <Box>
+      <NextLink href="/post/edit/[id]" as={`/post/edit/${post.id}`}>
+        <IconButton aria-label="Edit post" mr={2} as={Link}>
+          <EditIcon />
+        </IconButton>
+      </NextLink>
 
-    <IconButton
-      aria-label="Delete post"
-      colorScheme="red"
-      onClick={onDeletePost}
-    >
-      {deletingPost ? <SpinnerIcon /> : <DeleteIcon />}
-    </IconButton>
-  </Box>;
-}
+      <IconButton
+        aria-label="Delete post"
+        colorScheme="red"
+        onClick={onDeletePost}
+      >
+        {deletingPost ? <SpinnerIcon /> : <DeleteIcon />}
+      </IconButton>
+    </Box>
+  );
+};

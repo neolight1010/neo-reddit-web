@@ -5,7 +5,7 @@ import NextLink from "next/link";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { useRouter } from "next/dist/client/router";
 import isServer from "../utils/isServer";
-import {CreatePostButton} from "./CreatePostButton";
+import { CreatePostButton } from "./CreatePostButton";
 
 export interface NavBarProps {}
 
