@@ -34,6 +34,7 @@ export type Mutation = {
   updatePost?: Maybe<Post>;
   deletePost?: Maybe<Scalars["Boolean"]>;
   vote: Scalars["Int"];
+  deleteVote?: Maybe<Scalars["Int"]>;
   /** Returns true if the reset password email was sent. */
   forgotPassword: Scalars["Boolean"];
   changePassword: UserResponse;
@@ -59,6 +60,10 @@ export type MutationDeletePostArgs = {
 
 export type MutationVoteArgs = {
   direction: VoteDirection;
+  postId: Scalars["ID"];
+};
+
+export type MutationDeleteVoteArgs = {
   postId: Scalars["ID"];
 };
 
@@ -188,6 +193,15 @@ export type DeletePostMutationVariables = Exact<{
 export type DeletePostMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "deletePost"
+>;
+
+export type DeleteVoteMutationVariables = Exact<{
+  postId: Scalars["ID"];
+}>;
+
+export type DeleteVoteMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "deleteVote"
 >;
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -355,6 +369,17 @@ export const DeletePostDocument = gql`
 export function useDeletePostMutation() {
   return Urql.useMutation<DeletePostMutation, DeletePostMutationVariables>(
     DeletePostDocument
+  );
+}
+export const DeleteVoteDocument = gql`
+  mutation DeleteVote($postId: ID!) {
+    deleteVote(postId: $postId)
+  }
+`;
+
+export function useDeleteVoteMutation() {
+  return Urql.useMutation<DeleteVoteMutation, DeleteVoteMutationVariables>(
+    DeleteVoteDocument
   );
 }
 export const ForgotPasswordDocument = gql`

@@ -4,6 +4,7 @@ import { Flex } from "@chakra-ui/layout";
 import { useState } from "react";
 import {
   PostsQuery,
+  useDeleteVoteMutation,
   useVoteMutation,
   VoteDirection,
 } from "../generated/graphql";
@@ -19,8 +20,23 @@ export const VoteSection = ({
 
   const [points, setPoints] = useState(post.points);
   const [, vote] = useVoteMutation();
+  const [, deleteVote] = useDeleteVoteMutation();
 
   const onVoteClick = async (direction: VoteDirection) => {
+    if (userVote === direction) {
+      const deleteVoteResult = await deleteVote({
+        postId: post.id,
+      });
+
+      const newPoints = deleteVoteResult.data?.deleteVote || null;
+
+      if (newPoints !== null) {
+        setPoints(newPoints);
+      }
+
+      return;
+    }
+
     const voteResult = await vote({
       direction,
       postId: post.id.toString(),
