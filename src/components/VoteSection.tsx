@@ -16,28 +16,44 @@ interface VoteSectionProps {
 export const VoteSection = ({
   postWithUserVote,
 }: VoteSectionProps): JSX.Element => {
-  const { post, userVote } = postWithUserVote;
+  const { post, userVote: initialUserVote } = postWithUserVote;
+
+  const [currentUserVote, setCurrentUserVote] = useState<VoteDirection | null>(
+    initialUserVote ?? null
+  );
 
   const [points, setPoints] = useState(post.points);
-  const [, vote] = useVoteMutation();
-  const [, deleteVote] = useDeleteVoteMutation();
+  const [, voteMutation] = useVoteMutation();
+  const [, deleteVoteMutation] = useDeleteVoteMutation();
 
   const onVoteClick = async (direction: VoteDirection) => {
-    if (userVote === direction) {
-      const deleteVoteResult = await deleteVote({
-        postId: post.id,
-      });
-
-      const newPoints = deleteVoteResult.data?.deleteVote || null;
-
-      if (newPoints !== null) {
-        setPoints(newPoints);
-      }
-
-      return;
+    if (currentUserVote === direction) {
+      return await deleteVote();
     }
 
-    const voteResult = await vote({
+    await vote(direction);
+  };
+
+  const deleteVote = async (): Promise<void> => {
+    setCurrentUserVote(null);
+
+    const deleteVoteResult = await deleteVoteMutation({
+      postId: post.id,
+    });
+
+    const newPoints = deleteVoteResult.data?.deleteVote || null;
+
+    if (newPoints !== null) {
+      setPoints(newPoints);
+    }
+
+    return;
+  };
+
+  const vote = async (direction: VoteDirection): Promise<void> => {
+    setCurrentUserVote(direction);
+
+    const voteResult = await voteMutation({
       direction,
       postId: post.id.toString(),
     });
@@ -54,7 +70,7 @@ export const VoteSection = ({
       <IconButton
         aria-label="Upvote"
         icon={<ChevronUpIcon />}
-        colorScheme={userVote == VoteDirection.Up ? "green" : undefined}
+        colorScheme={currentUserVote == VoteDirection.Up ? "green" : undefined}
         onClick={() => onVoteClick(VoteDirection.Up)}
       ></IconButton>
 
@@ -63,7 +79,7 @@ export const VoteSection = ({
       <IconButton
         aria-label="Downvote"
         icon={<ChevronDownIcon />}
-        colorScheme={userVote == VoteDirection.Down ? "red" : undefined}
+        colorScheme={currentUserVote == VoteDirection.Down ? "red" : undefined}
         onClick={() => onVoteClick(VoteDirection.Down)}
       ></IconButton>
     </Flex>
