@@ -33,8 +33,8 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost?: Maybe<Scalars["Boolean"]>;
-  vote: Scalars["Int"];
-  deleteVote?: Maybe<Scalars["Int"]>;
+  vote: Scalars["ID"];
+  deleteVote?: Maybe<Scalars["ID"]>;
   /** Returns true if the reset password email was sent. */
   forgotPassword: Scalars["Boolean"];
   changePassword: UserResponse;

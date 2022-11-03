@@ -22,7 +22,9 @@ export const VoteSection = ({
     initialUserVote ?? null
   );
 
-  const [points, setPoints] = useState(post.points);
+  const initialPoints = post.points;
+
+  const [currentPoints, setPoints] = useState(initialPoints);
   const [, voteMutation] = useVoteMutation();
   const [, deleteVoteMutation] = useDeleteVoteMutation();
 
@@ -37,32 +39,31 @@ export const VoteSection = ({
   const deleteVote = async (): Promise<void> => {
     setCurrentUserVote(null);
 
-    const deleteVoteResult = await deleteVoteMutation({
+    const { error: deleteVoteError } = await deleteVoteMutation({
       postId: post.id,
     });
 
-    const newPoints = deleteVoteResult.data?.deleteVote || null;
-
-    if (newPoints !== null) {
-      setPoints(newPoints);
+    if (deleteVoteError !== undefined) {
+      throw new Error("Deleting vote failed.");
     }
 
-    return;
+    setPoints(initialPoints);
   };
 
   const vote = async (direction: VoteDirection): Promise<void> => {
     setCurrentUserVote(direction);
 
-    const voteResult = await voteMutation({
+    const { error: voteError } = await voteMutation({
       direction,
       postId: post.id.toString(),
     });
 
-    const newPoints = voteResult.data?.vote;
-
-    if (newPoints !== undefined) {
-      setPoints(newPoints);
+    if (voteError !== undefined) {
+      throw new Error("Vote failed.");
     }
+
+    const additionalPoints = direction === VoteDirection.Up ? 1 : -1;
+    setPoints(initialPoints + additionalPoints);
   };
 
   return (
@@ -74,7 +75,7 @@ export const VoteSection = ({
         onClick={() => onVoteClick(VoteDirection.Up)}
       ></IconButton>
 
-      {points}
+      {currentPoints}
 
       <IconButton
         aria-label="Downvote"
