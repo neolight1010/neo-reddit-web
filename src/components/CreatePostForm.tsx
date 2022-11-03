@@ -41,6 +41,7 @@ export const EditPostForm = ({
 
         return errors;
       }}
+      enableReinitialize={true}
     >
       {({ isSubmitting }) => (
         <Form>
