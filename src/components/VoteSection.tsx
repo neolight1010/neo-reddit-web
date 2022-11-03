@@ -8,6 +8,7 @@ import {
   useVoteMutation,
   VoteDirection,
 } from "../generated/graphql";
+import { voteDirectionValue } from "../utils/vote";
 
 interface VoteSectionProps {
   postWithUserVote: PostsQuery["posts"]["postsWithUserVote"][0];
@@ -22,9 +23,12 @@ export const VoteSection = ({
     initialUserVote ?? null
   );
 
-  const initialPoints = post.points;
+  const initialPointsWithoutUserVote =
+    post.points - voteDirectionValue(initialUserVote ?? null);
 
-  const [currentPoints, setPoints] = useState(initialPoints);
+  const [currentPoints, setPoints] = useState(
+    initialPointsWithoutUserVote + voteDirectionValue(currentUserVote)
+  );
   const [, voteMutation] = useVoteMutation();
   const [, deleteVoteMutation] = useDeleteVoteMutation();
 
@@ -47,7 +51,7 @@ export const VoteSection = ({
       throw new Error("Deleting vote failed.");
     }
 
-    setPoints(initialPoints);
+    setPoints(initialPointsWithoutUserVote);
   };
 
   const vote = async (direction: VoteDirection): Promise<void> => {
@@ -62,8 +66,7 @@ export const VoteSection = ({
       throw new Error("Vote failed.");
     }
 
-    const additionalPoints = direction === VoteDirection.Up ? 1 : -1;
-    setPoints(initialPoints + additionalPoints);
+    setPoints(initialPointsWithoutUserVote + voteDirectionValue(direction));
   };
 
   return (
